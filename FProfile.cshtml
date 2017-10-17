@@ -1,23 +1,8 @@
-﻿@using ITechETradeBook_v2.Models;
-@model ITechETradeBook_v2.Models.DBImport
-
-
-@{
+﻿@{
     ViewBag.Title = "First Sign Up, E-TradeBook - Online Business Network";
     ITechETradeBook_v2.Models.etradebook_Entities db = new ITechETradeBook_v2.Models.etradebook_Entities();
 }
-@{
-
-    List<MultipleLanguage> lstMultipleLanguage = db.MultipleLanguages.ToList();
-    List<LanguageModel> listLanguage = new List<LanguageModel>();
-    foreach (MultipleLanguage item in lstMultipleLanguage)
-    {
-        listLanguage.Add(new LanguageModel(item));
-    }
-    var obCurrent = db.Memberships.Where(w => w.Email == WebSecurity.CurrentUserName).FirstOrDefault();
-}
-
-
+@model ITechETradeBook_v2.Models.DBImport
 
 <input type="hidden" id="FProfilesuccess" value="@TempData["FProfilesuccess"]" />
 <input type="hidden" id="FProfilewarning" value="@TempData["FProfilewarning"]" />
@@ -29,9 +14,9 @@
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             </div>
             <div class="header-1">
-                <h1> @Html.Raw(listLanguage.Where(l => l.Name == "SignUp_Required").Select(l => l.Value).FirstOrDefault())</h1>
+                <h1>SignUp Required</h1>
                 <div class="header-bottom-line"></div>
-                <h3>@Html.Raw(listLanguage.Where(l => l.Name == "Update_your profile").Select(l => l.Value).FirstOrDefault())</h3>
+                <h3>Update your profile</h3>
             </div>
             <div class="row">
                 <div class="col-md-1"></div>
@@ -39,10 +24,9 @@
                     <div class="row">
                         <article class="block-form col-xs-12 col-sm-6 col-md-6 col-lg-12">
                             <div class="block-form box-border">
-                                <form class="form-horizontal" method="post" action="~/@(HttpContext.Current.Request.Cookies["CurrentCulture"].Value.Substring(0,2))/Account/FProfile" id="frmUpdateProfile" enctype="multipart/form-data">
+                                <form class="form-horizontal" method="post" action="~/Account/FProfile" id="frmUpdateProfile" enctype="multipart/form-data">
                                     <div class="form-group">
-
-                                        <label for="inputBUName" class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "FProfile-Business trade-name").Select(l => l.Value).FirstOrDefault())<span class="text-error">*</span></label>
+                                        <label for="inputBUName" class="col-sm-3 control-label">Business/trade name:<span class="text-error">*</span></label>
                                         <div class="col-sm-9">
                                             <input type="text" name="BusinessName" class="form-control" id="inputBUName" data-bvalidator="required" value="@if (Model != null)
                                                                                                                                                            { @Html.Raw(Model.CompanyName);
@@ -50,7 +34,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputContactName" class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Contact-name").Select(l => l.Value).FirstOrDefault())<span class="text-error">*</span></label>
+                                        <label for="inputContactName" class="col-sm-3 control-label">Contact name:<span class="text-error">*</span></label>
                                         <div class="col-sm-9">
                                             <input type="text" name="ContactName" class="form-control" id="inputContactName" value="@if (Model != null)
                                                                                                                                     {@Html.Raw(Model.FirstName);
@@ -60,7 +44,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="txtContactNumber" class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Contact-Number:").Select(l => l.Value).FirstOrDefault())<span class="text-error">*</span></label>
+                                        <label for="txtContactNumber" class="col-sm-3 control-label">Contact Number:<span class="text-error">*</span></label>
                                         <div class="col-sm-9">
                                             <input type="text" name="ContactNumber" id="txtContactNumber" class="form-control" value="@if (Model != null)
                                                                                                                                       { @Model.O_Phone;
@@ -68,30 +52,27 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Logo Photo").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label class="col-sm-3 control-label">Logo Photo:</label>
                                         <div style="float: left;" class="col-sm-9">
                                             <input type="file" name="uploadLogo" id="uploadLogo" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Cover Photo:").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label class="col-sm-3 control-label">Cover Photo:</label>
                                         <div style="float: left;" class="col-sm-9">
                                             <input type="file" name="uploadCover" id="uploadCover" />
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Business area:").Select(l => l.Value).FirstOrDefault()): <span class="text-error">*</span></label>
+                                        <label class="col-sm-3 control-label">Business area: <span class="text-error">*</span></label>
                                         <div class="col-sm-9">
-                                            <select name="BusinessAreaId" class="form-control" id="ddlBusinessArea" data-bvalidator="required">
-                                                <option value="" selected="selected">@Html.Raw(listLanguage.Where(l => l.Name == "Nothing Selected").Select(l => l.Value).FirstOrDefault()):</option>
+                                            <select name="BusinessAreaId" class="form-control" id="ddlBusinessAreaID" data-bvalidator="required">
+                                                <option value="" selected="selected">Nothing Selected</option>
                                                 @{
-                                                    string lang_s = HttpContext.Current.Request.Cookies["CurrentCulture"].Value;
-
                                                     var buAreas = (from cate in db.Categories
                                                                    join cateCul in db.CategoryCultures on cate.Id equals cateCul.CategoryId
-                                                                   join ln in db.Languages on cateCul.LanguageId equals ln.Id
-                                                                   where ln.Code == lang_s && cate.IsActive == true && cate.ParentId == null
+                                                                   where cateCul.LanguageId == 1 && cate.IsActive == true && cate.ParentId == null
                                                                    select new
                                                                    {
                                                                        Text = cateCul.Name,
@@ -119,27 +100,21 @@
                                                             }
                                                         }
                                                     }
-                                                }
+}
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">
-                                            @Html.Raw(listLanguage.Where(l => l.Name == "Product_Service").Select(l => l.Value).FirstOrDefault()): @*<span class="text-error">*</span>*@
-                                        </label>
-                                        @*<div class="col-sm-9">
-                                            <input type="text" name="product_services" placeholder="@Html.Raw(listLanguage.Where(l => l.Name == "Free_Text").Select(l => l.Value).FirstOrDefault())" class="form-control">
-
-                                        </div>*@
-                                        <select class="col-sm-9" id="ddlProductService">
-                                            <option value="" selected="selected">@Html.Raw(listLanguage.Where(l => l.Name == "Please_select").Select(l => l.Value).FirstOrDefault())</option>
-                                        </select>
+                                        <label class="col-sm-3 control-label">Product/Service: <span class="text-error">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select name="ProductService" id="ddlProductService" class="form-control" data-live-search="true" data-bvalidator="required"></select>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Country").Select(l => l.Value).FirstOrDefault()):  <span class="text-error">*</span></label>
+                                        <label class="col-sm-3 control-label">Country: <span class="text-error">*</span></label>
                                         <div class="col-sm-9">
-                                            <select name="LocationId" id="ddlProfile_Country" class="form-control" data-bvalidator="required">
-                                                <option value="">@Html.Raw(listLanguage.Where(l => l.Name == "Nothing Selected").Select(l => l.Value).FirstOrDefault()): </option>
+                                            <select name="LocationId" id="ddlLocationId" class="form-control" data-bvalidator="required">
+                                                <option value="">Nothing Selected</option>
                                                 @{
                                                     var listCountry = (from c in db.Countries
                                                                        where c.IsActive == true
@@ -172,38 +147,19 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">
-                                            @Html.Raw(listLanguage.Where(l => l.Name == "State/Province_Title").Select(l => l.Value).FirstOrDefault())
-                                        </label>
+                                        <label class="col-sm-3 control-label">State/Province:<span class="text-error">*</span></label>
                                         <div class="col-sm-9">
-                                            <select name="ddlprovince" class="form-control" id="ddlProfile_Provinces">
-                                                <option value="" selected="selected">@Html.Raw(listLanguage.Where(l => l.Name == "Please_select").Select(l => l.Value).FirstOrDefault())</option>
-                                                @{
-
-                                                    var provinceList = (from c in db.Provinces
-                                                                        select new { c.Name, c.Id }).ToList();
-
-                                                    foreach (var item in provinceList)
-                                                    {
-                                                        <option value="@item.Id">@item.Name</option>
-                                                    }
-                                                }
-                                            </select>
+                                            <select name="ProvinceId" class="form-control" data-live-search="true" id="ddlProvinceId" data-bvalidator="required"></select>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">
-                                            @Html.Raw(listLanguage.Where(l => l.Name == "City/Suburbs_Title").Select(l => l.Value).FirstOrDefault())
-                                        </label>
+                                        <label class="col-sm-3 control-label">City/Suburb:</label>
                                         <div class="col-sm-9">
-                                            <select name="ddlcity" class="form-control" id="ddlProfile_City">
-                                                <option value="" selected="selected">@Html.Raw(listLanguage.Where(l => l.Name == "Please_select").Select(l => l.Value).FirstOrDefault())</option>
-                                            </select>
+                                            <select name="DistrictId" class="form-control" data-live-search="true" id="ddlDistrictId"></select>
                                         </div>
-
                                     </div>
                                     <div class="form-group">
-                                        <label for="txtPostalAddress" class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Postal Address").Select(l => l.Value).FirstOrDefault()): </label>
+                                        <label for="txtPostalAddress" class="col-sm-3 control-label">Postal Address:</label>
                                         <div class="col-sm-9">
                                             <input type="text" name="PostalAddress" id="txtPostalAddress" class="form-control" value="@if (Model != null)
                                                                                                                                       { @Html.Raw(Model.Address);
@@ -211,19 +167,19 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="txtJobTitle" class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Job title or Position").Select(l => l.Value).FirstOrDefault()): </label>
+                                        <label for="txtJobTitle" class="col-sm-3 control-label">Job title or Position:</label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="JobTitle" id="txtJobTitle" class="form-control" />
+                                            <input type="text" name="JobTitle" id="txtJobTitle" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="txtDepartment" class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Department").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label for="txtDepartment" class="col-sm-3 control-label">Department:</label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="Department" id="txtDepartment" class="form-control" />
+                                            <input type="text" name="Department" id="txtDepartment" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="txtWebAddress" class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Website address").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label for="txtWebAddress" class="col-sm-3 control-label">Website address:</label>
                                         <div class="col-sm-9">
                                             <input type="text" name="WebsiteAddress" id="txtWebAddress" class="form-control" value="@if (Model != null)
                                                                                                                                     { @Model.Website;
@@ -231,42 +187,42 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="txtTelephone" class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Tel").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label for="txtTelephone" class="col-sm-3 control-label">Tel:</label>
                                         <div class="col-sm-9">
                                             <input type="text" name="Tel" id="txtTelephone" value="@if (Model != null) { @Model.M_Phone; }" class="form-control" />
                                         </div>
                                     </div>
 
-                                    <h3>@Html.Raw(listLanguage.Where(l => l.Name == "Free Product-Service on Virtual Market").Select(l => l.Value).FirstOrDefault()):</h3>
+                                    <h3>Free Product/Service on Virtual Market</h3>
                                     <hr />
-                                    <p><i>@Html.Raw(listLanguage.Where(l => l.Name == "You should upload").Select(l => l.Value).FirstOrDefault()):</i></p>
-                                    <p><i>@Html.Raw(listLanguage.Where(l => l.Name == "Other things").Select(l => l.Value).FirstOrDefault()):</i></p>
+                                    <p><i>You should upload 4 photos and fill all data in below form because these information will be displayed on the Virtual Market where people can see your products.</i></p>
+                                    <p><i>Other things, You should upload all photos because after this step you cannot upload anymore for this product without Gold Member of E-TradeBook.</i></p>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Main Photo").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label class="col-sm-3 control-label">Main Photo:</label>
                                         <div style="float: left;" class="col-sm-9">
                                             <input type="file" name="uploadProductServicePhoto" id="uploadProductServicePhoto" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Photo 1").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label class="col-sm-3 control-label">Photo 1:</label>
                                         <div style="float: left;" class="col-sm-9">
                                             <input type="file" name="uploadProductServicePhoto1" id="uploadProductServicePhoto1" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Photo 2").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label class="col-sm-3 control-label">Photo 2:</label>
                                         <div style="float: left;" class="col-sm-9">
                                             <input type="file" name="uploadProductServicePhoto2" id="uploadProductServicePhoto2" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">@Html.Raw(listLanguage.Where(l => l.Name == "Photo 3").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label class="col-sm-3 control-label">Photo 3:</label>
                                         <div style="float: left;" class="col-sm-9">
                                             <input type="file" name="uploadProductServicePhoto3" id="uploadProductServicePhoto3" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="inputCompany">@Html.Raw(listLanguage.Where(l => l.Name == "Product or Brand name").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label class="col-sm-3 control-label" for="inputCompany">Product or Brand name:</label>
                                         <div class="col-sm-9">
                                             <div class="row">
                                                 <div class="col-sm-12">
@@ -276,7 +232,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="inputPrice">@Html.Raw(listLanguage.Where(l => l.Name == "Currency").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label class="col-sm-3 control-label" for="inputPrice">Currency:</label>
                                         <div class="col-sm-9">
                                             <div class="row">
                                                 <div class="col-sm-6">
@@ -294,7 +250,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="inputPrice">@Html.Raw(listLanguage.Where(l => l.Name == "Price").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label class="col-sm-3 control-label" for="inputPrice">Price:</label>
                                         <div class="col-sm-9">
                                             <div class="row">
                                                 <div class="col-sm-6">
@@ -304,7 +260,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="inputCompany">@Html.Raw(listLanguage.Where(l => l.Name == "Description").Select(l => l.Value).FirstOrDefault()):</label>
+                                        <label class="col-sm-3 control-label" for="inputCompany">Description:</label>
                                         <div class="col-sm-9">
                                             <div class="row">
                                                 <div class="col-sm-12">
@@ -336,5 +292,5 @@
         function ChooseType(id) {
             alert(id);
         }
-    </script>
+    </script>    
 }

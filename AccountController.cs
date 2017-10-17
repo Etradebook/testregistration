@@ -579,32 +579,32 @@ namespace ITechETradeBook_v2.Controllers
                     {
                         acc_Membership.ProvinceId = model.ProvinceId;
                     }
-
+                    //false
                     if (model.DistrictId != null)
                     {
                         acc_Membership.DistrictId = model.DistrictId;
                     }
-
+                    //false
                     if (model.PostalAddress != null)
                     {
                         acc_Membership.PostalAddress = model.PostalAddress.Trim();
                     }
-
+                    //false
                     if (model.JobTitle != null)
                     {
                         acc_Membership.JobTitle = model.JobTitle.Trim();
                     }
-
+                    //false
                     if (model.Department != null)
                     {
                         acc_Membership.Department = model.Department.Trim();
                     }
-
+                    //false
                     if (model.Tel != null)
                     {
                         acc_Membership.Tel = model.Tel.Trim();
                     }
-
+                    //false
                     if (model.WebsiteAddress != null)
                     {
                         acc_Membership.WebsiteAddress = model.WebsiteAddress.Trim();
