@@ -1,0 +1,177 @@
+﻿@using ITechETradeBook_v2.Models
+@{
+    ViewBag.Title = "Register, E-TradeBook - Online Business Network";
+    ITechETradeBook_v2.Models.etradebook_Entities db = new ITechETradeBook_v2.Models.etradebook_Entities();
+}
+@{
+    List<MultipleLanguage> lstMultipleLanguage = db.MultipleLanguages.Where(m => m.Page == "General" || m.Page == "Account").ToList();
+    List<LanguageModel> lstlanguage = new List<LanguageModel>();
+    foreach (MultipleLanguage item in lstMultipleLanguage)
+    {
+        lstlanguage.Add(new LanguageModel(item));
+    }
+}
+
+<!-- Scripts page -->
+<script>
+    $(document).ready(function () {
+        if ($("#success").val() != "") {
+            $(".close").after($("#success").val());
+            $("#RegisterAlert").attr('class', 'alert alert-success');
+            $("#RegisterAlert").css('display', '');
+        }
+
+        if ($("#warning").val() != "") {
+            $(".close").after($("#warning").val());
+            $("#RegisterAlert").attr('class', 'alert alert-warning');
+            $("#RegisterAlert").css('display', '');
+        }
+    });
+</script>
+<!-- Scripts page -->
+<input type="hidden" id="success" value="@TempData["success"]" />
+<input type="hidden" id="warning" value="@TempData["warning"]" />
+<section>
+    <div class="block color-scheme-3">
+        <div class="container">
+            <div class="alert alert-success" id="RegisterAlert" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <div class="header-1">
+                <h1>@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Register").Select(l => l.Value).FirstOrDefault())</h1>
+                <div class="header-bottom-line"></div>
+                <h3>@Html.Raw(lstlanguage.Where(l => l.Name == "acc_CreateNewAccount").Select(l => l.Value).FirstOrDefault())</h3>
+            </div>
+            <div class="row">
+                <article class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="block-form box-border">
+                        <h3>@Html.Raw(lstlanguage.Where(l => l.Name == "acc_PersonalInfo").Select(l => l.Value).FirstOrDefault())</h3>
+                        <hr>
+                        <form class="form-horizontal" method="post" action="~/Account/Register" id="frmRegister">
+                            <div class="form-group">
+                                <label for="inputFirstName" class="col-sm-3 control-label">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_FirstName").Select(l => l.Value).FirstOrDefault()):<span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="FirstName" class="form-control" id="inputFirstName" data-bvalidator="required">
+                                    @*@Html.TextBoxFor()*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputLastName" class="col-sm-3 control-label">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_LastName").Select(l => l.Value).FirstOrDefault()):<span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="LastName" class="form-control" id="inputLastName" data-bvalidator="required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEMail" class="col-sm-3 control-label">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Input_Email").Select(l => l.Value).FirstOrDefault()):<span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="email" name="Email" class="form-control" id="inputEMail" data-bvalidator="required,email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEMail" class="col-sm-3 control-label">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_ConfirmEmail").Select(l => l.Value).FirstOrDefault()):<span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="email" class="form-control" id="inputConfirmEMail" name="ConfirmEMail" data-bvalidator="required,email,equalto[inputEMail]">
+                                </div>
+                            </div>
+
+                            <h3>@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Password").Select(l => l.Value).FirstOrDefault()):</h3>
+                            <hr>
+                            <div class="form-group">
+                                <label for="inputPassword1" class="col-sm-3 control-label">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Password").Select(l => l.Value).FirstOrDefault()):: <span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="password" name="Password" class="form-control" id="inputPassword1" data-bvalidator="minlength[8],required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword2" class="col-sm-3 control-label">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_RePassword").Select(l => l.Value).FirstOrDefault()):: <span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control" id="inputPassword2" name="Password2" data-bvalidator="minlength[8],required,equalto[inputPassword1]">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="Gender">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Gender").Select(l => l.Value).FirstOrDefault()): <span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="GenderId" id="Male" value="1" checked="">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Gender_Male").Select(l => l.Value).FirstOrDefault())
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="GenderId" id="Fermale" value="2">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Gender_Female").Select(l => l.Value).FirstOrDefault())
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="GenderId" id="Other" value="3">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Gender_Other").Select(l => l.Value).FirstOrDefault())
+                                       
+                                         </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Birthday").Select(l => l.Value).FirstOrDefault()): <span class="text-error">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="Birthday" class="form-control form_datetime" data-bvalidator="required"/>
+                                </div>
+                                <span class="glyphicon glyphicon-calendar" style="margin-top: 18px;"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="newsletter" class="col-sm-3 control-label">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_IAm").Select(l => l.Value).FirstOrDefault()) : <span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="CustomerType" id="customer1" value="Customer" checked="">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Customer").Select(l => l.Value).FirstOrDefault())
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="CustomerType" id="business1" value="Business">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Business").Select(l => l.Value).FirstOrDefault())
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="CustomerType" id="both1" value="Both">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Both").Select(l => l.Value).FirstOrDefault())
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="CustomerType" id="professional1" value="Professional">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_Professional").Select(l => l.Value).FirstOrDefault())
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="agree" data-bvalidator="required">
+                                            @Html.Raw(lstlanguage.Where(l => l.Name == "acc_AgreeCondition").Select(l => l.Value).FirstOrDefault())
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <input type="submit" class="btn-default-1" value="@lstlanguage.Where(l => l.Name == "acc_Register_btn").Select(l => l.Value).FirstOrDefault()">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </article>
+                <article class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="block-form box-border">
+                        @{
+                            PageCulture page = ViewBag.pageCondition;
+                        }
+                        @*@Html.Raw(page.ShortDescription)*@
+                        @Html.Raw(lstlanguage.Where(l => l.Name == "acc_ShortDescription").Select(l => l.Value).FirstOrDefault())
+                        <a href="~/Home/PageContent?strUrl=@page.Url" class="btn-default-1">@Html.Raw(lstlanguage.Where(l => l.Name == "acc_ReadMore").Select(l => l.Value).FirstOrDefault())</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+
