@@ -9,12 +9,15 @@ namespace ITechETradeBook_v2.Services
 {
     public class Mail
     {
-        public void SendMail(string subject, string body, string toAddress, string toName)
+        public void SendMail(string subject, string body, string toAddress, string toName = "NoName")
         {
-            string fromAddress = "cs@e-tradebook.com";
+            string fromAddress = "main@e-tradebook.com";
             string fromName = "e-TradeBook.com";
+            //string fromAddress = "cs@e-tradebook.com";
+            //string fromName = "e-TradeBook.com";
             string host = "mail.e-tradebook.com";
-            int port = 26;
+            int port = 25;
+            //int port = 26;
             string userName = ConfigurationManager.AppSettings["SystemEmail"].ToString();
             string password = ConfigurationManager.AppSettings["SystemEmailPassword"].ToString();
             var message = new MailMessage();
